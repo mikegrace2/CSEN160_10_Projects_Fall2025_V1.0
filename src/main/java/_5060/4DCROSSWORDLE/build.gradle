@@ -1,0 +1,59 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" } // For jME snapshots if needed
+    maven { url "https://jitpack.io" } // For Lemur
+}
+
+application {
+    mainClass = 'org.example.Main'
+}
+
+jar {
+    duplicatesStrategy 'exclude'
+
+    manifest {
+        attributes 'Main-Class': application.mainClass
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+ext {
+    jmeVersion = "3.6.1-stable"
+    lemurVersion = "1.16.0"
+    lwjglVersion = "3.3.3"
+}
+
+dependencies {
+    implementation "org.jmonkeyengine:jme3-core:${jmeVersion}"
+    implementation "org.jmonkeyengine:jme3-desktop:${jmeVersion}"
+
+    implementation "org.jmonkeyengine:jme3-lwjgl3:${jmeVersion}"
+
+    implementation "com.github.jMonkeyEngine-Contributions:Lemur:v${lemurVersion}"
+
+    implementation 'org.codehaus.groovy:groovy-all:3.0.13'
+
+    implementation 'org.slf4j:slf4j-simple:1.7.32'
+}
+
+run {
+    standardInput = System.in
+    systemProperties System.getProperties()
+    jvmArgs = ['-Xms1G', '-Xmx1G']
+}

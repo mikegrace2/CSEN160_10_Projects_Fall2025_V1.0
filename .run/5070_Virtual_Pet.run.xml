@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="5070 Virtual Pet" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="AMain" />
+    <module name="CSEN160_10_Projects" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

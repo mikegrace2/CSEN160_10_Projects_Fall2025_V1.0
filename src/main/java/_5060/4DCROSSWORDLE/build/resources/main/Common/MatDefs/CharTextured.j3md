@@ -1,0 +1,20 @@
+MaterialDef CharTextured {
+    MaterialParameters {
+        Texture2D ColorMap
+        Vector4 ColorMap_UVs // (uMin, vMin, uMax, vMax) for the character
+    }
+    Technique {
+        VertexShader GLSL100:   MatDefs/CharTextured.vert
+        FragmentShader GLSL100: MatDefs/CharTextured.frag
+        WorldParameters {
+            WorldViewProjectionMatrix
+        }
+        Defines {
+            #define TEXTURE_COLORMAP 1
+        }
+        RenderState {
+            FaceCullMode Off
+            BlendMode AlphaAdditive
+        }
+    }
+}
