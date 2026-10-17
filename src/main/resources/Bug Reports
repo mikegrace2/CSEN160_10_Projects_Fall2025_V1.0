@@ -1,0 +1,8 @@
+BUGS WITH THE CODE
+- if two ai's lose in a round, both are eliminated and the remaining is duplicated
+    - if two ai's lose, the last one seems to be eliminated, even if they didnt lose
+        - i had a round with J(me) 5 5 K --> K was eliminated
+- no next round
+- sometimes ai's aren't eliminated
+    - i had a round where the last ai to go (who was also the furthest right) lost
+        and wasnt eliminated
