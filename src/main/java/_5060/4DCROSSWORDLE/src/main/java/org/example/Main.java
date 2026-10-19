@@ -228,7 +228,7 @@ public class Main extends SimpleApplication implements ActionListener {
                     puzzleNode.attachChild(cubeGeo);
                     cubeSpatials.put(key, cubeGeo);
 
-                    BitmapText letter = new BitmapText(guiFont, false);
+                    BitmapText letter = new BitmapText(guiFont);
                     letter.setSize(0.5f);
                     letter.setColor(ColorRGBA.White);
                     letter.setText("");
@@ -317,9 +317,8 @@ public class Main extends SimpleApplication implements ActionListener {
 
         puzzleNode.collideWith(ray, results);
 
-        if (results.size() > 0) {
-            CollisionResult closest = results.getClosestCollision();
-            Geometry hitGeo = closest.getGeometry();
+        for (int i = 0; i < results.size(); i++) {
+            Geometry hitGeo = results.getCollision(i).getGeometry();
             String geoName = hitGeo.getName();
             String coordKey = null;
 
@@ -333,13 +332,12 @@ public class Main extends SimpleApplication implements ActionListener {
                 List<WordSearchMatrix.WordData> candidates = coordToPuzzlesMap.get(coordKey);
 
                 if (candidates != null && !candidates.isEmpty()) {
-                    WordSearchMatrix.WordData newPuzzle = candidates.get(0);
-                    if (candidates.size() > 1 && candidates.get(0).equals(activePuzzle)) {
-                        newPuzzle = candidates.get(1);
-                    }
-
+                    int activeIndex = candidates.indexOf(activePuzzle);
+                    int nextIndex = (activeIndex + 1) % candidates.size();
+                    WordSearchMatrix.WordData newPuzzle = candidates.get(nextIndex);
                     activePuzzle = newPuzzle;
                     updateUI();
+                    return;
                 }
             }
         }

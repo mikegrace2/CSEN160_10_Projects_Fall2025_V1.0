@@ -54,6 +54,5 @@ dependencies {
 
 run {
     standardInput = System.in
-    systemProperties System.getProperties()
     jvmArgs = ['-Xms1G', '-Xmx1G']
 }

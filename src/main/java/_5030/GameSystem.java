@@ -120,7 +120,6 @@ public class GameSystem {
     public void endRound() {
         //Determine what the lowest card is
         System.out.println("Ending Round...");
-        //setPrevCard(turnOrder[0].getCard());
         lowestRank = 13;
         for (int i = 0; i < playerCount; i++) {
             if (turnOrder[i].getCard().getRank() < lowestRank) {
@@ -128,37 +127,31 @@ public class GameSystem {
             }
         }
 
-        //itMove = 0;
-
-        //Remove lives from the player(s) with the lowest card(s)
+        // Apply the penalty to every tied lowest card before removing anyone.
         for (int i = 0; i < playerCount; i++) {
             if (turnOrder[i].getCard().getRank() == lowestRank) {
                 turnOrder[i].loseLife();
-                if (turnOrder[i].getLives() <= 0) {
-
-
-                    //End the game if the main player is eliminated
-                    if (i == 0) {
-                        //Game Over
-                        gameOver = 1;
-                        setWaiting(0);
-                        return;
-
-                        //Eliminate a player by shifting all players down
-                    } else {
-                        Player[] copy = new Player[playerCount - 1];
-                        System.arraycopy(turnOrder, 0, copy, 0, i);
-                        System.arraycopy(turnOrder, i + 1, copy, i, playerCount - i - 1);
-                        turnOrder = copy;
-                        playerCount--;
-                    }
-                }
             }
-
         }
+
+        boolean userEliminated = turnOrder[0].getLives() <= 0;
+        Player[] remainingPlayers = new Player[playerCount];
+        int remainingCount = 0;
+        for (Player player : turnOrder) {
+            if (player.getLives() > 0) {
+                remainingPlayers[remainingCount++] = player;
+            }
+        }
+        turnOrder = Arrays.copyOf(remainingPlayers, remainingCount);
+        playerCount = remainingCount;
+
         for (int i = 0; i < 4; i++) lifeCount[i] = 0;
         for (int i = 0; i < playerCount; i++) lifeCount[turnOrder[i].getId()] = turnOrder[i].getLives();
-        if(playerCount == 1){
+
+        if (userEliminated) {
+            gameOver = 1;
+            setWaiting(0);
+        } else if (playerCount == 1) {
             gameOver = 2;
             setWaiting(0);
         } else{
